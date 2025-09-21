@@ -1,0 +1,55 @@
+syntax = "proto3";
+
+package carservice;
+// placeholder for methods that don't need input
+message Empty {}  // <--  Empty message
+
+// Cars in the system
+message Car {
+  string plate = 1;
+  string model = 2;
+  string brand = 3;
+  double price = 4;
+}
+// List of cars - browsing
+message CarList {
+  repeated Car cars = 1;
+}
+// Identify a car by its number plate
+message CarRequest {
+  string plate = 1;
+}
+// Customer reserving a car by plate number
+message Reservation {
+  string plate = 1;
+  string customerName = 2;
+  string date = 3;
+}
+// Holding a list of reservations
+message ReservationList {
+  repeated Reservation reservations = 1;
+}
+// Request of a customer to make a reservation
+message ReservationRequest {
+  string plate = 1;
+  string customerName = 2;
+}
+// Generic response, success/failure message
+message Response {
+  string message = 1;
+}
+//
+service CarService {
+  rpc BrowseCars(Empty) returns (CarList); // returns available cars
+  rpc SearchCar(CarRequest) returns (Car); // look up car by plate number
+  rpc PlaceReservation(ReservationRequest) returns (Response); //customer reserving a car
+  rpc AddCar(Car) returns (Response); // admin adds a new car
+  rpc UpdateCar(Car) returns (Response); // admin updates car information
+  rpc RemoveCar(CarRequest) returns (Response); // admin removes a car  by plate number
+  rpc ListReservations(Empty) returns (ReservationList); //returns all reservations in the system
+}
+
+
+
+
+
